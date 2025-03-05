@@ -1,8 +1,9 @@
+import UI from './ui'
+
 export default function Home() {
   return (
-    <div>
-      TODO List
-      <i className="fas fa-check"></i>
+    <div className="w-full h-screen">
+      <UI />
     </div>
   )
 }
