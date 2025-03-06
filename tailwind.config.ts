@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        righteous: ['Righteous', 'cursive'],
+        noto: ['Noto Sans', 'sans-serif'],
+      },
       colors: {
         'soft-blue': {
           200: '#b2d3e2',
