@@ -4,7 +4,7 @@ import type { ChangeEvent } from 'react'
 import Todo from '@/components/todos/Todo'
 import Button from '@/components/ui/button/Button'
 import Input from '@/components/ui/input/Input'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { createTodo, getTodos } from '@/actions/todo-actions'
 import Spinner from '@/components/ui/spinner/Spinner'
@@ -21,7 +21,7 @@ export default function UI() {
   const createTodoMutation = useMutation({
     mutationFn: () =>
       createTodo({
-        title: '새로운 할 일',
+        title: `새로운 할 일`,
         completed: false,
         created_at: new Date().toISOString(),
       }),
@@ -40,7 +40,7 @@ export default function UI() {
 
   return (
     <div className="w-2/3 mx-auto flex flex-col items-center gap-3 py-10">
-      <h2 className="text-xl font-bold">Next Todos</h2>
+      <h2 className="text-2xl font-bold text-soft-blue-900">Next Todos</h2>
 
       <div className="w-full flex gap-1">
         <Input
@@ -59,15 +59,16 @@ export default function UI() {
         width="w-36"
         onClick={createTodoMutation.mutate}
         disabled={createTodoMutation.isPending}
+        className="my-5"
       >
         {createTodoMutation.isPending ? <Spinner /> : <i className="fas fa-plus"></i>}
         <span>ADD TODO</span>
       </Button>
 
       {todosQuery.isPending &&
-        Array(17)
+        Array(15)
           .fill(null)
-          .map((_, index) => <Skeleton key={index + 'qwer'} />)}
+          .map((_, index) => <Skeleton key={index + 'skeleton'} />)}
       {todosQuery.data && todosQuery.data.map((todo) => <Todo key={todo.id} todo={todo} />)}
     </div>
   )

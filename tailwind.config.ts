@@ -9,16 +9,27 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'lime-green-300': '#81c784',
-        'lime-green-500': '#4caf50',
-        'lime-green-700': '#2e7d32',
-        'lime-green-900': '#1b5e20',
-        'native-gray-600': '#9e9e9e',
-        'steel-blue-600': '#3a4c6b',
-        'off-white-500': '#f5f5f5',
-        'dim-gray-600': '#444444',
-        'github-gray': '#333333',
-        'google-blue': '#4285f4',
+        'soft-blue': {
+          200: '#b2d3e2',
+          400: '#8bb8d8',
+          600: '#6b8fbe',
+          800: '#486ba7',
+          900: '#3B4F80',
+        },
+        mint: {
+          100: '#D1FAE5',
+          200: '#A7F3D0',
+          300: '#81E6D9',
+          400: '#4FD1C5',
+          500: '#34D399',
+          600: '#2BB28B',
+          700: '#169D73',
+          800: '#0F7F5F',
+          900: '#0B5A47',
+        },
+        'soft-violet': {
+          400: '#9b59b6',
+        },
       },
       animation: {
         shake: 'shake 0.4s ease-in-out',

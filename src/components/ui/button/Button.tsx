@@ -14,7 +14,7 @@ export type ButtonProps = {
 export default function Button({
   children,
   onClick = () => {},
-  bgColor = 'black',
+  bgColor = 'bg-soft-blue-900',
   textColor = 'text-white',
   width = 'w-16',
   height = 'h-12',
@@ -23,12 +23,9 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
-      style={{
-        backgroundColor: disabled ? '#6b7280' : bgColor,
-      }}
       className={`${
         disabled ? 'bg-[#6b7280] cursor-not-allowed' : `${bgColor} cursor-pointer`
-      } ${textColor} ${width} ${height} rounded-sm flex justify-center items-center gap-2 font-bold opacity-85 transition-all ease-in-out duration-150 hover:opacity-100 ${className}`}
+      } ${textColor} ${width} ${height} rounded-sm flex justify-center items-center gap-2 font-bold opacity-85 transition-all ease-in-out duration-150 hover:opacity-100 hover:rounded-xl ${className}`}
       onClick={onClick}
       disabled={disabled}
     >

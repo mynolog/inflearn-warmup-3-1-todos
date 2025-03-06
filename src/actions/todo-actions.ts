@@ -20,7 +20,7 @@ function handleError(error: unknown) {
     throw new Error('예기치 않은 오류가 발생했습니다.')
   }
 }
-
+// Read
 export async function getTodos({ searchInput = '' }): Promise<TodoRow[]> {
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase
@@ -35,7 +35,7 @@ export async function getTodos({ searchInput = '' }): Promise<TodoRow[]> {
 
   return data ?? []
 }
-
+// Create
 export async function createTodo(todo: TodoRowInsert) {
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase.from('todos').insert({
@@ -49,7 +49,7 @@ export async function createTodo(todo: TodoRowInsert) {
 
   return data
 }
-
+// Update
 export async function updateTodo(todo: TodoRowUpdate) {
   if (!todo.id) {
     throw new Error('id가 없습니다.')
@@ -70,6 +70,24 @@ export async function updateTodo(todo: TodoRowUpdate) {
   return data
 }
 
+export async function updateTodoComplete(todo: TodoRowUpdate) {
+  if (!todo.id) {
+    throw new Error('id가 없습니다.')
+  }
+  const supabase = await createServerSupabaseClient()
+  const { data, error } = await supabase
+    .from('todos')
+    .update({
+      ...todo,
+      completed_at: new Date().toISOString(),
+    })
+    .eq('id', todo.id)
+  if (error) {
+    handleError(error)
+  }
+  return data
+}
+// Delete
 export async function deleteTodo(id: TodoRow['id']) {
   const supabase = await createServerSupabaseClient()
 
