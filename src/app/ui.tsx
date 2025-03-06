@@ -10,10 +10,12 @@ import { createTodo, getTodos } from '@/actions/todo-actions'
 import Spinner from '@/components/ui/spinner/Spinner'
 import Skeleton from '@/components/ui/skeleton/Skeleton'
 import Logo from '@/components/ui/logo/Logo'
+import { getCurrentDate } from '@/utils/\bformat/format'
 
 export default function UI() {
   const [searchInput, setSearchInput] = useState('')
   const [debouncedSearchInput, setDebouncedSearchInput] = useState('')
+  const currentDate = getCurrentDate()
 
   // 검색어 입력 디바운스
   useEffect(() => {
@@ -55,7 +57,21 @@ export default function UI() {
 
   return (
     <div className="max-w-[768px] w-2/3 mx-auto flex flex-col items-center gap-3 py-10">
-      <Logo className="mb-4" />
+      <Logo />
+
+      <div className="w-full flex flex-col justify-center items-center">
+        <div className="w-full flex justify-center items-center gap-2">
+          <p className="my-3 text-xl">{currentDate.date}</p>
+          <p
+            className={`my-3 text-xl ${
+              currentDate.dayOfWeek === '일요일' ? 'text-red-400' : 'text-black'
+            }`}
+          >
+            {currentDate.dayOfWeek}
+          </p>
+        </div>
+        <p className="my-3 text-sm text-mint-700">{currentDate.message}</p>
+      </div>
 
       <div className="relative w-full flex gap-1">
         <Input
