@@ -9,6 +9,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { createTodo, getTodos } from '@/actions/todo-actions'
 import Spinner from '@/components/ui/spinner/Spinner'
 import Skeleton from '@/components/ui/skeleton/Skeleton'
+import Logo from '@/components/ui/logo/Logo'
 
 export default function UI() {
   const [searchInput, setSearchInput] = useState('')
@@ -54,7 +55,7 @@ export default function UI() {
 
   return (
     <div className="max-w-[768px] w-2/3 mx-auto flex flex-col items-center gap-3 py-10">
-      <h2 className="text-2xl font-bold text-soft-blue-900">Next Todos</h2>
+      <Logo className="mb-4" />
 
       <div className="relative w-full flex gap-1">
         <Input
@@ -75,7 +76,7 @@ export default function UI() {
         className="my-5"
       >
         {createTodoMutation.isPending ? <Spinner /> : <i className="fas fa-plus"></i>}
-        <span>ADD TODO</span>
+        <span>할 일 추가</span>
       </Button>
       {/* 초기 렌더링 시, 스켈레톤 UI 렌더링 */}
       {todosQuery.isLoading && (

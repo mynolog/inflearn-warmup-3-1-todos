@@ -132,17 +132,17 @@ export default function Todo({ todo }: TodoProps) {
           )}
         </div>
       ) : (
-        <p className={`flex-1 ${completed ? 'line-through' : ''}`}>{title}</p>
+        <p className={`px-1 flex-1 ${completed ? 'line-through' : ''}`}>{title}</p>
       )}
 
       <div className="text-xs font-semibold text-gray-500 flex flex-col justify-center items-center gap-1">
         <div className="w-full relative flex items-center">
           {todo.updated_at && <i className="absolute fa fa-pen left-[-20px]"></i>}
-          <span>생성: {localTimeCreateAt}</span>
+          <span>생성 · {localTimeCreateAt}</span>
         </div>
         {todo.completed_at && (
-          <span className="animate-fadeIn font-bold text-soft-blue-900">
-            완료: {getLocalTime(todo.completed_at)}
+          <span className="animate-fadeIn font-bold text-mint-700">
+            완료 · {getLocalTime(todo.completed_at)}
           </span>
         )}
       </div>
