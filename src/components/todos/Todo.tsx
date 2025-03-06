@@ -9,6 +9,7 @@ import { useMutation } from '@tanstack/react-query'
 import { deleteTodo, TodoRow, updateTodo } from '@/actions/todo-actions'
 import { queryClient } from '@/providers/ReactQueryClientProvider'
 import Spinner from '../ui/spinner/Spinner'
+import { getLocalTime } from '@/utils/\bformat/format'
 
 type TodoProps = {
   todo: TodoRow
@@ -18,6 +19,8 @@ export default function Todo({ todo }: TodoProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [completed, setCompleted] = useState(todo.completed)
   const [title, setTitle] = useState(todo.title)
+
+  const localTimeCreateAt = getLocalTime(todo.created_at)
 
   const updateTodoMutation = useMutation({
     mutationFn: () =>
@@ -71,6 +74,11 @@ export default function Todo({ todo }: TodoProps) {
       ) : (
         <p className={`flex-1 ${completed ? 'line-through' : ''}`}>{title}</p>
       )}
+
+      <div className="text-xs font-semibold text-gray-500 flex items-center gap-2">
+        {todo.updated_at && <i className="fa fa-clock"></i>}
+        <span>{localTimeCreateAt}</span>
+      </div>
 
       {isEditing ? (
         <Button width="w-12" height="h-10" onClick={handleUpdateTitle}>
