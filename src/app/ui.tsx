@@ -12,10 +12,20 @@ import Skeleton from '@/components/ui/skeleton/Skeleton'
 
 export default function UI() {
   const [searchInput, setSearchInput] = useState('')
+  const [debouncedSearchInput, setDebouncedSearchInput] = useState('')
+
+  // 검색어 입력 디바운스
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchInput(searchInput)
+    }, 600)
+
+    return () => clearTimeout(timer)
+  }, [searchInput])
 
   const todosQuery = useQuery({
     queryKey: ['todos'],
-    queryFn: () => getTodos({ searchInput }),
+    queryFn: () => getTodos(),
   })
 
   const createTodoMutation = useMutation({
@@ -37,6 +47,10 @@ export default function UI() {
     }
     setSearchInput(value)
   }
+
+  const filteredTodos = todosQuery.data?.filter((todo) =>
+    todo.title.toLowerCase().includes(debouncedSearchInput.toLowerCase())
+  )
 
   return (
     <div className="w-2/3 mx-auto flex flex-col items-center gap-3 py-10">
@@ -65,11 +79,42 @@ export default function UI() {
         <span>ADD TODO</span>
       </Button>
 
-      {todosQuery.isPending &&
-        Array(15)
-          .fill(null)
-          .map((_, index) => <Skeleton key={index + 'skeleton'} />)}
-      {todosQuery.data && todosQuery.data.map((todo) => <Todo key={todo.id} todo={todo} />)}
+      {todosQuery.isLoading && (
+        <div className="w-full flex flex-col gap-2">
+          {Array(5)
+            .fill(null)
+            .map((_, index) => (
+              <Skeleton key={index + 'skeleton'} />
+            ))}
+        </div>
+      )}
+      {/* 초기 렌더링 시, 검색어 없이 데이터가 없을 때 */}
+      {todosQuery.isSuccess && todosQuery.data.length === 0 && searchInput === '' && (
+        <div className="w-full flex flex-col gap-2">
+          <div className="transition-all duration-300 ease-in-out animate-slideUp font-bold text-lg">
+            🥲 할 일이 없습니다. 새로운 할 일을 추가해 보세요.
+          </div>
+        </div>
+      )}
+
+      {/* 검색어가 있고, 검색 결과가 없을 때 */}
+      {filteredTodos && filteredTodos.length === 0 && searchInput !== '' && (
+        <div className="w-full flex flex-col gap-2">
+          <div className="transition-all duration-300 ease-in-out animate-slideUp font-bold text-lg">
+            🥲 검색 결과가 없습니다. 다른 검색어를 입력해보세요.
+          </div>
+        </div>
+      )}
+      {/* 검색어의 검색 결과가 존재하거나 Todos가 존재할 때 */}
+      {filteredTodos && filteredTodos.length > 0 && (
+        <div className="w-full flex flex-col gap-2">
+          {filteredTodos.map((todo) => (
+            <div key={todo.id} className="transition-all duration-300 ease-in-out animate-slideUp">
+              <Todo todo={todo} />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

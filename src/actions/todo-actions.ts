@@ -21,12 +21,11 @@ function handleError(error: unknown) {
   }
 }
 // Read
-export async function getTodos({ searchInput = '' }): Promise<TodoRow[]> {
+export async function getTodos(): Promise<TodoRow[]> {
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase
     .from('todos')
     .select('*')
-    .like('title', `%${searchInput}%`)
     .order('created_at', { ascending: true })
 
   if (error) {
