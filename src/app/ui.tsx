@@ -21,7 +21,7 @@ export default function UI() {
   const createTodoMutation = useMutation({
     mutationFn: () =>
       createTodo({
-        title: 'New Todo',
+        title: '새로운 할 일',
         completed: false,
         created_at: new Date().toISOString(),
       }),
@@ -45,7 +45,7 @@ export default function UI() {
       <div className="w-full flex gap-1">
         <Input
           type="text"
-          placeholder="Search Todo"
+          placeholder="키워드를 입력하세요"
           className="w-full"
           value={searchInput}
           onChange={handleChangeSearchInput}
