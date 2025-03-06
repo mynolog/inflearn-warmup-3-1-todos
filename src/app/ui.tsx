@@ -1,6 +1,7 @@
 'use client'
 
 import type { ChangeEvent } from 'react'
+import Image from 'next/image'
 import Todo from '@/components/todos/Todo'
 import Button from '@/components/ui/button/Button'
 import Input from '@/components/ui/input/Input'
@@ -11,6 +12,8 @@ import Spinner from '@/components/ui/spinner/Spinner'
 import Skeleton from '@/components/ui/skeleton/Skeleton'
 import Logo from '@/components/ui/logo/Logo'
 import { getCurrentDate } from '@/utils/\bformat/format'
+import muyaho from '../assets/images/muyaho.webp'
+import noSearchResult from '../assets/images/no-search-result.jpeg'
 
 export default function UI() {
   const [searchInput, setSearchInput] = useState('')
@@ -34,7 +37,7 @@ export default function UI() {
   const createTodoMutation = useMutation({
     mutationFn: () =>
       createTodo({
-        title: `새로운 할 일`,
+        title: `새로운 목표`,
         completed: false,
         created_at: new Date().toISOString(),
       }),
@@ -92,7 +95,7 @@ export default function UI() {
         className="my-5"
       >
         {createTodoMutation.isPending ? <Spinner /> : <i className="fas fa-plus"></i>}
-        <span>할 일 추가</span>
+        <span>목표 추가</span>
       </Button>
       {/* 초기 렌더링 시, 스켈레톤 UI 렌더링 */}
       {todosQuery.isLoading && (
@@ -106,18 +109,20 @@ export default function UI() {
       )}
       {/* 초기 렌더링 시, 검색어 없이 데이터가 없을 때 */}
       {todosQuery.isSuccess && todosQuery.data.length === 0 && searchInput === '' && (
-        <div className="w-full flex flex-col gap-2">
-          <div className="transition-all duration-300 ease-in-out animate-slideUp font-bold text-lg">
-            🥲 할 일이 없습니다. 새로운 할 일을 추가해 보세요.
+        <div className="w-full flex flex-col items-center gap-2">
+          <div className="w-full flex flex-col items-center gap-4 transition-all duration-300 ease-in-out animate-slideUp font-bold text-lg">
+            <span>🧐 무야호~ 오늘의 목표를 모두 달성하셨군요! 새로운 목표가 있나요?</span>
+            <Image src={muyaho} alt="무야호" width="220" className="rounded-xl shadow-xl" />
           </div>
         </div>
       )}
 
       {/* 검색어가 있고, 검색 결과가 없을 때 */}
       {filteredTodos && filteredTodos.length === 0 && searchInput !== '' && (
-        <div className="w-full flex flex-col gap-2">
-          <div className="transition-all duration-300 ease-in-out animate-slideUp font-bold text-lg">
-            🥲 검색 결과가 없습니다. 다른 검색어를 입력해보세요.
+        <div className="w-full flex flex-col items-center gap-2">
+          <div className="w-full flex flex-col items-center gap-4 transition-all duration-300 ease-in-out animate-slideUp font-bold text-lg">
+            <span>💦 결과를 찾지 못했어요! 다른 키워드로 시도해 볼까요?</span>
+            <Image src={noSearchResult} alt="없어요" width="220" className="rounded-xl shadow-xl" />
           </div>
         </div>
       )}
