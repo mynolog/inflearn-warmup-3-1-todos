@@ -1,24 +1,66 @@
 'use client'
 
+import type { ChangeEvent } from 'react'
 import { useState } from 'react'
 import Button from '../ui/button/Button'
 import Checkbox from '../ui/checkbox/Checkbox'
 import Input from '../ui/input/Input'
+import { useMutation } from '@tanstack/react-query'
+import { deleteTodo, TodoRow, updateTodo } from '@/actions/todo-actions'
+import { queryClient } from '@/providers/ReactQueryClientProvider'
+import Spinner from '../ui/spinner/Spinner'
 
-// type TodoProps = {
-//   id: string
-//   value: string
-//   completed: boolean
-// }
+type TodoProps = {
+  todo: TodoRow
+}
 
-export default function Todo({}) {
+export default function Todo({ todo }: TodoProps) {
   const [isEditing, setIsEditing] = useState(false)
-  const [completed, setCompleted] = useState(false)
-  const [title, setTitle] = useState<string>('')
+  const [completed, setCompleted] = useState(todo.completed)
+  const [title, setTitle] = useState(todo.title)
+
+  const updateTodoMutation = useMutation({
+    mutationFn: () =>
+      updateTodo({
+        id: todo.id,
+        title,
+        completed,
+      }),
+    onSuccess: () => {
+      setIsEditing(false)
+      queryClient.invalidateQueries({
+        queryKey: ['todos'],
+      })
+    },
+  })
+
+  const deleteTodoMutation = useMutation({
+    mutationFn: () => deleteTodo(todo.id),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['todos'],
+      })
+    },
+  })
+
+  const handleUpdateCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = e.target
+    setCompleted(checked)
+    updateTodoMutation.mutate()
+  }
+
+  const handleUpdateTitle = () => {
+    updateTodoMutation.mutate()
+  }
+
+  const handleDeleteTodo = () => {
+    deleteTodoMutation.mutate()
+  }
 
   return (
     <div className="w-full flex items-center gap-2">
-      <Checkbox checked={completed} onChange={(e) => setCompleted(e.target.checked)} />
+      <Checkbox checked={completed} onChange={handleUpdateCheckbox} />
       {isEditing ? (
         <Input
           type="text"
@@ -31,16 +73,16 @@ export default function Todo({}) {
       )}
 
       {isEditing ? (
-        <Button width="w-12" height="h-10" onClick={() => setIsEditing(false)}>
-          <i className="fas fa-check"></i>
+        <Button width="w-12" height="h-10" onClick={handleUpdateTitle}>
+          {updateTodoMutation.isPending ? <Spinner /> : <i className="fas fa-check"></i>}
         </Button>
       ) : (
         <Button width="w-12" height="h-10" onClick={() => setIsEditing(true)}>
           <i className="fas fa-pen"></i>
         </Button>
       )}
-      <Button width="w-12" height="h-10">
-        <i className="fas fa-trash"></i>
+      <Button width="w-12" height="h-10" onClick={handleDeleteTodo}>
+        {deleteTodoMutation.isPending ? <Spinner /> : <i className="fas fa-trash"></i>}
       </Button>
     </div>
   )

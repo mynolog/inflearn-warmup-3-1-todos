@@ -26,7 +26,9 @@ export default function Button({
       style={{
         backgroundColor: disabled ? '#6b7280' : bgColor,
       }}
-      className={`${textColor} ${width} ${height} rounded-sm flex justify-center items-center gap-2 font-bold opacity-85 transition-all ease-in-out duration-300 hover:opacity-100 ${className}`}
+      className={`${
+        disabled ? 'bg-[#6b7280] cursor-not-allowed' : `${bgColor} cursor-pointer`
+      } ${textColor} ${width} ${height} rounded-sm flex justify-center items-center gap-2 font-bold opacity-85 transition-all ease-in-out duration-150 hover:opacity-100 ${className}`}
       onClick={onClick}
       disabled={disabled}
     >
