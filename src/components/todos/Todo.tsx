@@ -140,7 +140,11 @@ export default function Todo({ todo }: TodoProps) {
           {todo.updated_at && <i className="absolute fa fa-pen left-[-20px]"></i>}
           <span>생성: {localTimeCreateAt}</span>
         </div>
-        {todo.completed_at && <span>완료: {getLocalTime(todo.completed_at)}</span>}
+        {todo.completed_at && (
+          <span className="animate-fadeIn font-bold text-soft-blue-900">
+            완료: {getLocalTime(todo.completed_at)}
+          </span>
+        )}
       </div>
 
       {isEditing ? (

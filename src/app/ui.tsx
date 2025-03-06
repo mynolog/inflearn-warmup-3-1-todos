@@ -53,10 +53,10 @@ export default function UI() {
   )
 
   return (
-    <div className="w-2/3 mx-auto flex flex-col items-center gap-3 py-10">
+    <div className="max-w-[768px] w-2/3 mx-auto flex flex-col items-center gap-3 py-10">
       <h2 className="text-2xl font-bold text-soft-blue-900">Next Todos</h2>
 
-      <div className="w-full flex gap-1">
+      <div className="relative w-full flex gap-1">
         <Input
           type="text"
           placeholder="키워드를 입력하세요"
@@ -64,9 +64,8 @@ export default function UI() {
           value={searchInput}
           onChange={handleChangeSearchInput}
         />
-        <Button>
-          <i className="fa-solid fa-magnifying-glass"></i>
-        </Button>
+
+        <i className="absolute right-3 top-4 text-gray-400 fa-solid fa-magnifying-glass"></i>
       </div>
 
       <Button
@@ -78,7 +77,7 @@ export default function UI() {
         {createTodoMutation.isPending ? <Spinner /> : <i className="fas fa-plus"></i>}
         <span>ADD TODO</span>
       </Button>
-
+      {/* 초기 렌더링 시, 스켈레톤 UI 렌더링 */}
       {todosQuery.isLoading && (
         <div className="w-full flex flex-col gap-2">
           {Array(5)
@@ -109,7 +108,10 @@ export default function UI() {
       {filteredTodos && filteredTodos.length > 0 && (
         <div className="w-full flex flex-col gap-2">
           {filteredTodos.map((todo) => (
-            <div key={todo.id} className="transition-all duration-300 ease-in-out animate-slideUp">
+            <div
+              key={todo.id}
+              className="transition-all duration-300 ease-in-out animate-slideDown"
+            >
               <Todo todo={todo} />
             </div>
           ))}
